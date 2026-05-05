@@ -1348,6 +1348,7 @@ th.col-produto {
 .header-rep {
     font-size: 0.75rem;
     letter-spacing: 1px;
+    white-space: nowrap;
 }
 
 .header-rep.kolte { background: #3d5a80; }
@@ -1365,6 +1366,8 @@ th.col-produto {
     font-weight: 600;
     letter-spacing: 0.3px;
     color: white;
+    white-space: nowrap;
+    min-width: 52px;
 }
 
 /* Herdar cores dos representantes nos sub-headers (cada grupo de 3) */
@@ -2125,6 +2128,17 @@ tr.total-row:hover {
     z-index: 1350 !important;
     background: var(--bg-white);
     margin-bottom: 0;
+    padding: 10px 30px 10px 5px;
+    box-sizing: border-box;
+    width: 100%;
+    overflow: visible;
+}
+
+#tab-estoque .section-header .header-actions {
+    flex-shrink: 0;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 8px;
 }
 
 /* Ensure thead sticks above body but below section header/actions */
