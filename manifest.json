@@ -1,0 +1,17 @@
+{
+  "name": "Sistema Integrado — Ponto & Estoque",
+  "short_name": "Integrado",
+  "description": "Sistema unificado de Controle de Ponto e Controle de Estoque",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#2563eb",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='36' fill='%232563eb'/%3E%3Ctext y='140' font-size='140' x='24'%3E🏛️%3C/text%3E%3C/svg%3E",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    }
+  ]
+}

@@ -1,0 +1,458 @@
+/* ================================================================
+   vr-styles.css — Estilos do módulo de Vale-Refeição
+   Usa as CSS variables do projeto: --primary, --positive (≈ success),
+   --danger, --border-soft, --bg-soft (≈ bg-secondary), --bg-card,
+   --text-muted, --shadow-soft.
+   ================================================================ */
+
+/* ----------------------------------------------------------------
+   Card interno do VR (dashboard)
+   ---------------------------------------------------------------- */
+.vr-card-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.vr-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.vr-icon {
+  font-size: 32px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.vr-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text-main, #1e293b);
+}
+
+.vr-subtitle {
+  font-size: 13px;
+  color: var(--text-muted, #475569);
+  margin-top: 2px;
+}
+
+/* ----------------------------------------------------------------
+   Valor principal
+   ---------------------------------------------------------------- */
+.vr-valor-principal {
+  font-size: 36px;
+  font-weight: 800;
+  color: var(--positive, #16a34a);
+  letter-spacing: -0.5px;
+  line-height: 1.1;
+}
+
+/* ----------------------------------------------------------------
+   Breakdown de cálculo
+   ---------------------------------------------------------------- */
+.vr-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border-top: 1px solid var(--border-soft, #cfd6df);
+  padding-top: 10px;
+}
+
+.vr-breakdown-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  color: var(--text-main, #1e293b);
+  padding: 2px 0;
+}
+
+.vr-breakdown-row.vr-negativo {
+  color: var(--danger, #dc2626);
+}
+
+.vr-breakdown-row.vr-positivo {
+  color: var(--positive, #16a34a);
+}
+
+.vr-breakdown-row.vr-total {
+  font-weight: 700;
+  border-top: 1px solid var(--border-soft, #cfd6df);
+  padding-top: 6px;
+  margin-top: 4px;
+  font-size: 14px;
+}
+
+/* ----------------------------------------------------------------
+   Aviso (laranja)
+   ---------------------------------------------------------------- */
+.vr-aviso {
+  background: var(--warning-soft, #fed7aa);
+  color: #92400e;
+  border-left: 4px solid var(--warning, #d97706);
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+/* ----------------------------------------------------------------
+   Linha VR no timesheet
+   ---------------------------------------------------------------- */
+.vr-timesheet-linha {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--positive-soft, #dcfce7);
+  border-left: 4px solid var(--positive, #16a34a);
+  border-radius: 6px;
+  padding: 6px 12px;
+  margin-top: 8px;
+  font-size: 13px;
+  color: var(--positive-dark, #064e37);
+}
+
+.vr-timesheet-label {
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.vr-timesheet-info {
+  color: var(--positive-dark, #064e37);
+}
+
+/* ----------------------------------------------------------------
+   Itens de tarifa
+   ---------------------------------------------------------------- */
+.vr-tarifa-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 10px 12px;
+  border: 1px solid var(--border-soft, #cfd6df);
+  border-radius: 8px;
+  margin-bottom: 8px;
+  background: var(--bg-soft, #f8f9fa);
+}
+
+.vr-tarifa-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.vr-tarifa-valor {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--positive, #16a34a);
+}
+
+.vr-tarifa-vigencia {
+  font-size: 12px;
+  color: var(--text-muted, #475569);
+}
+
+.vr-tarifa-obs {
+  font-size: 12px;
+  color: var(--text-muted, #475569);
+  width: 100%;
+}
+
+/* ----------------------------------------------------------------
+   Badges
+   ---------------------------------------------------------------- */
+.vr-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  text-transform: lowercase;
+}
+
+.vr-badge-green {
+  background: var(--positive-soft, #dcfce7);
+  color: var(--positive-dark, #064e37);
+}
+
+.vr-badge-red {
+  background: var(--negative-soft, #fee2e2);
+  color: var(--negative-dark, #991b1b);
+}
+
+.vr-badge-blue {
+  background: var(--info-soft, #e0f2fe);
+  color: var(--info, #0284c7);
+}
+
+/* ----------------------------------------------------------------
+   Tabela de preview
+   ---------------------------------------------------------------- */
+.vr-preview-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.vr-preview-table th,
+.vr-preview-table td {
+  padding: 7px 10px;
+  border: 1px solid var(--border-soft, #cfd6df);
+  text-align: left;
+}
+
+.vr-preview-table th {
+  background: var(--bg-soft, #f8f9fa);
+  font-weight: 600;
+  color: var(--text-muted, #475569);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.vr-preview-table .vr-row-atual {
+  background: var(--info-soft, #e0f2fe);
+  font-weight: 600;
+}
+
+.vr-preview-table .vr-row-atual td {
+  border-color: var(--info, #0284c7);
+}
+
+/* ----------------------------------------------------------------
+   Seção de configuração
+   ---------------------------------------------------------------- */
+.vr-config-block {
+  padding: 16px 0;
+  border-bottom: 1px solid var(--border-soft, #cfd6df);
+}
+
+.vr-config-block:last-child {
+  border-bottom: none;
+}
+
+.vr-config-block h3 {
+  margin: 0 0 10px;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-main, #1e293b);
+}
+
+.vr-config-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.vr-config-header h3 {
+  margin: 0;
+}
+
+.vr-form-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.vr-form-row .form-group {
+  margin: 0;
+}
+
+.vr-hint {
+  font-size: 12px;
+  color: var(--text-muted, #475569);
+  margin: 0 0 10px;
+}
+
+.vr-empty {
+  font-size: 13px;
+  color: var(--text-muted, #475569);
+  font-style: italic;
+  margin: 8px 0 0;
+}
+
+.vr-btn-sm {
+  font-size: 12px !important;
+  padding: 3px 8px !important;
+  border-radius: 6px !important;
+}
+
+/* ----------------------------------------------------------------
+   Modal de Nova Tarifa
+   ---------------------------------------------------------------- */
+#modalVRTarifa .modal-content {
+  width: min(480px, 94vw);
+  border-radius: 14px;
+  background: var(--bg-card, #fff);
+  box-shadow: var(--shadow-large, 0 6px 16px rgba(0,0,0,.08));
+  overflow: hidden;
+}
+
+#modalVRTarifa .modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border-soft, #cfd6df);
+}
+
+#modalVRTarifa .modal-header h2 {
+  margin: 0;
+  font-size: 17px;
+}
+
+#modalVRTarifa .modal-body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+#modalVRTarifa .modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 14px 20px;
+  border-top: 1px solid var(--border-soft, #cfd6df);
+  background: var(--bg-soft, #f8f9fa);
+}
+
+#modalVRTarifa .modal-close {
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  color: var(--text-muted, #475569);
+  line-height: 1;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+#modalVRTarifa .modal-close:hover {
+  background: var(--bg-soft, #f8f9fa);
+  color: var(--text-main, #1e293b);
+}
+
+/* ----------------------------------------------------------------
+   Dark mode
+   ---------------------------------------------------------------- */
+html[data-theme="dark"] .vr-tarifa-item {
+  background: var(--bg-soft, #061225);
+  border-color: var(--border-soft, #0f1724);
+}
+
+html[data-theme="dark"] .vr-aviso {
+  background: rgba(217,119,6,.18);
+  color: #fcd34d;
+  border-left-color: var(--warning, #f59e0b);
+}
+
+html[data-theme="dark"] .vr-timesheet-linha {
+  background: rgba(52,211,153,.12);
+  border-left-color: var(--positive, #34d399);
+  color: #6ee7b7;
+}
+
+html[data-theme="dark"] .vr-timesheet-info {
+  color: #6ee7b7;
+}
+
+html[data-theme="dark"] .vr-preview-table th {
+  background: var(--bg-soft, #061225);
+  color: var(--text-muted, #a8bdd4);
+}
+
+html[data-theme="dark"] .vr-preview-table th,
+html[data-theme="dark"] .vr-preview-table td {
+  border-color: var(--border-soft, #0f1724);
+}
+
+html[data-theme="dark"] .vr-preview-table .vr-row-atual {
+  background: rgba(96,165,250,.15);
+}
+
+html[data-theme="dark"] .vr-preview-table .vr-row-atual td {
+  border-color: rgba(96,165,250,.4);
+}
+
+html[data-theme="dark"] .vr-config-block {
+  border-bottom-color: var(--border-soft, #0f1724);
+}
+
+html[data-theme="dark"] #modalVRTarifa .modal-content {
+  background: var(--bg-card, #071428);
+}
+
+html[data-theme="dark"] #modalVRTarifa .modal-header,
+html[data-theme="dark"] #modalVRTarifa .modal-footer {
+  border-color: var(--border-soft, #0f1724);
+}
+
+html[data-theme="dark"] #modalVRTarifa .modal-footer {
+  background: var(--bg-soft, #061225);
+}
+
+html[data-theme="dark"] .vr-badge-green {
+  background: rgba(52,211,153,.18);
+  color: #6ee7b7;
+}
+
+html[data-theme="dark"] .vr-badge-red {
+  background: rgba(248,113,113,.18);
+  color: #fca5a5;
+}
+
+html[data-theme="dark"] .vr-badge-blue {
+  background: rgba(96,165,250,.18);
+  color: #93c5fd;
+}
+
+/* ----------------------------------------------------------------
+   Responsivo
+   ---------------------------------------------------------------- */
+@media (max-width: 600px) {
+  .vr-valor-principal {
+    font-size: 28px;
+  }
+
+  .vr-form-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .vr-form-row .form-group {
+    width: 100%;
+  }
+
+  .vr-config-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .vr-preview-table {
+    font-size: 12px;
+  }
+
+  .vr-preview-table th,
+  .vr-preview-table td {
+    padding: 5px 6px;
+  }
+
+  #modalVRTarifa .modal-content {
+    border-radius: 10px;
+  }
+
+  .vr-tarifa-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

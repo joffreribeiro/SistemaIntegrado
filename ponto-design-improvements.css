@@ -1,0 +1,771 @@
+/* ═══════════════════════════════════════════════════════════════════
+   DESIGN IMPROVEMENTS — camada de correção e refinamento
+   Carregado APÓS styles.css e theme-redesign.css
+
+   OBJETIVO: preservar o redesign Slate SaaS do theme-redesign.css
+   e corrigir somente os conflitos introduzidos pelo styles.css legado.
+
+   NUNCA redefinir o que theme-redesign.css já faz bem.
+   APENAS resolver conflitos e adicionar o que está faltando.
+═══════════════════════════════════════════════════════════════════ */
+
+/* ──────────────────────────────────────────────────────────────
+   A. FONTE — impõe DM Sans de forma definitiva
+   styles.css força Inter/system-ui; theme-redesign.css usa DM Sans
+   Esta camada garante que DM Sans vença em todos os elementos
+─────────────────────────────────────────────────────────────── */
+html, body {
+    font-family: 'DM Sans', system-ui, -apple-system, sans-serif !important;
+}
+
+/* Valores numéricos em mono para alinhamento tabular */
+.stat-value,
+#horasPeriodo, #saldoBancoHoras, #horasExtras, #horasAcordo,
+#mediaHorasDia, #diasTrabalhados, #saldo30d, #tendenciaSaldo,
+#horaSaidaEstimada, #faltasPeriodo {
+    font-family: 'JetBrains Mono', 'Consolas', monospace !important;
+}
+
+/* ──────────────────────────────────────────────────────────────
+   B. PALETA — consolida tokens divergentes
+   styles.css :root define --primary: #1e3a8a (marinho escuro)
+   theme-redesign.css :root define --primary: #1e40af (azul)
+   Esta camada define o valor final Slate SaaS
+─────────────────────────────────────────────────────────────── */
+:root {
+    --primary:        #1e40af;
+    --primary-soft:   #dbeafe;
+    --primary-dark:   #1e3a8a;
+    --primary-hover:  #1d4ed8;
+    --accent:         #0891b2;
+    --accent-soft:    #cffafe;
+
+    --bg-page:    #f1f5f9;
+    --bg-card:    #ffffff;
+    --bg-soft:    #f8fafc;
+
+    --text-main:  #0f172a;
+    --text-muted: #64748b;
+    --text-light: #94a3b8;
+
+    --border-soft:  #e2e8f0;
+    --border-table: #e9edf2;
+
+    /* Sombras SaaS — mais presentes que no styles.css, mais sutis que no legado */
+    --shadow-soft:   0 1px 3px rgba(15,23,42,.06), 0 1px 2px rgba(15,23,42,.04);
+    --shadow-medium: 0 4px 16px rgba(15,23,42,.10), 0 2px 6px rgba(15,23,42,.06);
+    --shadow-large:  0 12px 32px rgba(15,23,42,.13), 0 4px 12px rgba(15,23,42,.07);
+
+    /* Cor de fim de semana — substitui #BFBFBF hardcoded */
+    --weekend-bg:   #d1d5db;
+    --weekend-text: #374151;
+
+    --focus-ring: rgba(30,64,175,.18);
+    --card-radius: 14px;
+    --btn-radius:  8px;
+}
+
+/* ──────────────────────────────────────────────────────────────
+   C. TOPBAR — styles.css define border-radius: 0 0 16px 16px
+   theme-redesign.css já corrigiu para border-radius: 0 e gradient
+   Esta camada garante height consistente e alinhamento flex
+─────────────────────────────────────────────────────────────── */
+.topbar-unified {
+    height: 58px !important;
+    padding: 0 28px !important;
+    border-radius: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+}
+
+/* styles.css coloca topbar-logo em font-size: 28px e tem drop-shadow
+   O redesign usa um ícone clean — mantemos discreto */
+.topbar-logo {
+    font-size: 22px !important;
+    filter: none !important;
+    width: 32px;
+    height: 32px;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: rgba(255,255,255,.12);
+    border-radius: 8px;
+    flex-shrink: 0;
+}
+
+/* styles.css tem topbar-title em 20px / text-shadow — reduz para refinado */
+.topbar-title {
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    letter-spacing: -.2px !important;
+    text-shadow: none !important;
+    color: #fff !important;
+}
+
+.topbar-user {
+    font-size: 11.5px !important;
+    color: rgba(255,255,255,.58) !important;
+    font-weight: 400 !important;
+    margin-top: 1px !important;
+}
+
+/* ──────────────────────────────────────────────────────────────
+   D. TABS — styles.css tem border-bottom: 3px; theme-redesign.css
+   já cobre tab-btn; aqui adicionamos o indicador animado que estava
+   ausente e garantimos a posição sticky correta
+─────────────────────────────────────────────────────────────── */
+.tabs {
+    top: 58px !important;
+    border-bottom: 1px solid var(--border-soft) !important;
+    margin-bottom: 20px !important;
+    padding-bottom: 6px !important;
+}
+
+/* Indicador ativo animado (spring) — complementa theme-redesign.css */
+.tab-btn {
+    position: relative;
+    overflow: visible;
+}
+
+.tab-btn::after {
+    content: '';
+    position: absolute;
+    bottom: -7px;
+    left: 50%;
+    transform: translateX(-50%) scaleX(0);
+    width: 70%;
+    height: 2.5px;
+    background: var(--primary);
+    border-radius: 2px 2px 0 0;
+    transition: transform .22s cubic-bezier(.34,1.56,.64,1);
+}
+
+.tab-btn.active::after {
+    transform: translateX(-50%) scaleX(1);
+}
+
+/* Remove border-bottom direto do botão — já temos o pseudo-element */
+.tab-btn.active {
+    border-bottom-color: transparent !important;
+}
+
+/* ──────────────────────────────────────────────────────────────
+   E. SUBTABS — pill style com item ativo em destaque real
+   styles.css usa subtabs planas; theme-redesign.css já tem pill;
+   esta camada refina o item ativo com box-shadow
+─────────────────────────────────────────────────────────────── */
+.subtabs {
+    border: 1px solid var(--border-soft) !important;
+    margin-bottom: 20px !important;
+}
+
+.subtab-btn.active {
+    box-shadow: 0 1px 4px rgba(15,23,42,.12), 0 1px 2px rgba(15,23,42,.08) !important;
+}
+
+/* ──────────────────────────────────────────────────────────────
+   F. CARDS — styles.css tem border-radius: 16px e transition: all 0.3s
+   theme-redesign.css já tem 14px e animação _nx-fadeUp
+   Aqui apenas corrigimos o hover conflitante (translateY -4px → -2px)
+─────────────────────────────────────────────────────────────── */
+.card:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: var(--shadow-medium) !important;
+}
+
+/* styles.css tem card h2 em font-size: 20px — muito grande para SaaS */
+.card h2 {
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    letter-spacing: -.1px !important;
+    color: var(--text-main) !important;
+    margin: 0 0 18px !important;
+}
+
+/* ──────────────────────────────────────────────────────────────
+   G. KPI / STAT CARDS — hierarquia visual clara
+   styles.css define stat-value em 28px cor primary, border 2px solid
+   theme-redesign.css já tem a linha top e o hover
+   Esta camada refina apenas o que conflita
+─────────────────────────────────────────────────────────────── */
+.stat {
+    background: var(--bg-soft) !important;
+    border: 1px solid var(--border-soft) !important;   /* styles.css usa 2px */
+    border-radius: 12px !important;
+    box-shadow: var(--shadow-soft) !important;
+    padding: 16px 18px !important;
+    overflow: hidden;
+}
+
+.stat-label {
+    font-size: 10.5px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: .7px !important;
+    color: var(--text-muted) !important;
+    margin-bottom: 8px !important;
+}
+
+/* styles.css usa 28px cor primary — redesign usa text-main */
+.stat-value {
+    font-size: 26px !important;
+    font-weight: 700 !important;
+    color: var(--text-main) !important;   /* não primary — evita excesso de azul */
+    letter-spacing: -1px !important;
+    line-height: 1 !important;
+}
+
+.stat-value-large {
+    font-size: 30px !important;
+    letter-spacing: -1.2px !important;
+}
+
+/* Destaque semântico nos valores importantes */
+#saldoBancoHoras { color: var(--positive) !important; }
+#horaSaidaEstimada { color: var(--primary) !important; }
+#horasExtras { color: var(--accent) !important; }
+
+/* KPI destacado — gradiente suave ao invés de border primary */
+.stat-highlight,
+.stat.stat-highlight {
+    background: linear-gradient(135deg, #eff6ff 0%, #f0fdf4 100%) !important;
+    border-color: rgba(30,64,175,.12) !important;
+}
+
+/* styles.css tinha stat-card com border 2px solid — alinha ao stat */
+.stat-card {
+    border: 1px solid var(--border-soft) !important;
+    border-radius: 12px !important;
+    box-shadow: var(--shadow-soft) !important;
+}
+
+.stat-card:hover {
+    border-color: rgba(30,64,175,.22) !important;
+    transform: translateY(-2px) !important;
+}
+
+/* ──────────────────────────────────────────────────────────────
+   H. BOTÕES — corrige conflito styles.css (padding 12px 22px)
+   vs theme-redesign.css (9px 18px) — usa o valor refinado SaaS
+─────────────────────────────────────────────────────────────── */
+.btn-primary {
+    padding: 8px 18px !important;
+    font-size: 13.5px !important;
+    font-weight: 600 !important;
+    border-radius: var(--btn-radius) !important;
+    background: var(--primary) !important;
+    color: #fff !important;
+    border: none !important;
+    box-shadow: 0 1px 3px rgba(30,64,175,.25), inset 0 1px 0 rgba(255,255,255,.08) !important;
+    transition: background .15s, transform .14s, box-shadow .14s !important;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    background: var(--primary-hover) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 12px rgba(30,64,175,.35) !important;
+}
+
+.btn-primary:active {
+    transform: translateY(0) !important;
+    box-shadow: 0 1px 3px rgba(30,64,175,.20) !important;
+}
+
+.btn-secondary {
+    padding: 7px 16px !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    border-radius: var(--btn-radius) !important;
+    background: var(--bg-card) !important;
+    color: var(--text-main) !important;
+    border: 1px solid var(--border-soft) !important;
+    transition: background .14s, border-color .14s, transform .14s !important;
+}
+
+.btn-secondary:hover {
+    background: var(--primary-soft) !important;
+    border-color: rgba(30,64,175,.25) !important;
+    color: var(--primary) !important;
+    transform: translateY(-1px) !important;
+}
+
+.btn-outline {
+    padding: 7px 14px !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    border-radius: var(--btn-radius) !important;
+    background: transparent !important;
+    color: var(--text-muted) !important;
+    border: 1px solid var(--border-soft) !important;
+    transition: all .14s !important;
+}
+
+.btn-outline:hover {
+    color: var(--primary) !important;
+    border-color: var(--primary) !important;
+    background: var(--primary-soft) !important;
+    transform: translateY(-1px) !important;
+}
+
+/* Botão resetar filtros — styles.css usava vermelho, aqui é neutro */
+.dashboard-filters .btn-outline,
+.dashboard-filters button.btn-outline {
+    background: var(--bg-card) !important;
+    border: 1px solid var(--border-soft) !important;
+    color: var(--text-muted) !important;
+    box-shadow: none !important;
+}
+
+.dashboard-filters .btn-outline:hover,
+.dashboard-filters button.btn-outline:hover {
+    background: var(--primary-soft) !important;
+    border-color: var(--primary) !important;
+    color: var(--primary) !important;
+    transform: translateY(-1px) !important;
+}
+
+/* Botão resetar genérico em dashboard-filters (era vermelho — fica neutro) */
+.dashboard-filters button:not(.btn-primary):not(.btn-secondary):not(.btn-icon) {
+    background: var(--bg-card) !important;
+    color: var(--text-muted) !important;
+    border: 1px solid var(--border-soft) !important;
+    box-shadow: none !important;
+    padding: 7px 14px !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    border-radius: var(--btn-radius) !important;
+}
+
+.dashboard-filters button:not(.btn-primary):not(.btn-secondary):not(.btn-icon):hover {
+    background: var(--primary-soft) !important;
+    border-color: var(--primary) !important;
+    color: var(--primary) !important;
+    transform: translateY(-1px) !important;
+}
+
+/* ──────────────────────────────────────────────────────────────
+   I. TABELAS — cabeçalho mais limpo, zebra sutil
+─────────────────────────────────────────────────────────────── */
+thead th {
+    font-size: 10.5px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: .7px !important;
+    color: var(--text-muted) !important;
+    background: var(--bg-soft) !important;
+    padding: 11px 12px !important;
+    border-bottom: 2px solid var(--border-soft) !important;
+}
+
+/* Tabela de atividades mantém cabeçalho colorido */
+#tabelaAtividades thead th {
+    background: var(--primary) !important;
+    color: rgba(255,255,255,.95) !important;
+    border-bottom: none !important;
+}
+
+tbody tr:nth-child(even) {
+    background: rgba(248,250,252,.6);
+}
+
+tbody tr:hover {
+    background: var(--primary-soft) !important;
+}
+
+tbody td {
+    padding: 10px 12px !important;
+    vertical-align: middle !important;
+}
+
+/* Linha de fim de semana — substitui #BFBFBF hardcoded */
+.linha-cinza {
+    background: var(--weekend-bg) !important;
+    color: var(--weekend-text) !important;
+}
+
+/* ──────────────────────────────────────────────────────────────
+   J. FILTROS DO DASHBOARD — retirar background hardcoded #f8f9fa
+─────────────────────────────────────────────────────────────── */
+.dashboard-filters {
+    background: var(--bg-soft) !important;
+    border: 1px solid var(--border-soft) !important;
+    border-radius: 12px !important;
+    padding: 14px 18px !important;
+    margin-bottom: 16px !important;
+    box-shadow: none !important;
+}
+
+.filter-group label {
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    color: var(--text-muted) !important;
+    text-transform: uppercase !important;
+    letter-spacing: .4px !important;
+    margin-bottom: 4px !important;
+}
+
+.filter-group select,
+.filter-group input[type="date"] {
+    background: var(--bg-card) !important;
+    border: 1.5px solid var(--border-soft) !important;
+    border-radius: 8px !important;
+    font-size: 13px !important;
+    padding: 7px 10px !important;
+    color: var(--text-main) !important;
+    box-shadow: none !important;
+}
+
+.filter-group select:focus,
+.filter-group input[type="date"]:focus {
+    border-color: var(--primary) !important;
+    box-shadow: 0 0 0 3px var(--focus-ring) !important;
+    outline: none !important;
+}
+
+/* ──────────────────────────────────────────────────────────────
+   K. ALERTAS DE JORNADA — suaviza o gradiente agressivo
+─────────────────────────────────────────────────────────────── */
+.alertas-jornada {
+    background: var(--warning-soft) !important;
+    border: 1px solid rgba(217,119,6,.22) !important;
+    border-left: 3px solid var(--warning) !important;
+    border-radius: 10px !important;
+    padding: 12px 16px !important;
+    box-shadow: none !important;
+}
+
+.alertas-jornada.alertas-critical {
+    background: var(--negative-soft) !important;
+    border: 1px solid rgba(220,38,38,.22) !important;
+    border-left: 3px solid var(--negative) !important;
+}
+
+/* ──────────────────────────────────────────────────────────────
+   L. ANIMAÇÕES — staggered nas seções (sem conflitar com _nx-fadeUp)
+─────────────────────────────────────────────────────────────── */
+@keyframes _imp-slideUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Stagger para cards do dashboard */
+.dashboard-grid > *:nth-child(1) { animation-delay: .04s; }
+.dashboard-grid > *:nth-child(2) { animation-delay: .10s; }
+.dashboard-grid > *:nth-child(3) { animation-delay: .16s; }
+
+/* Stagger para stats */
+.stats-grid .stat:nth-child(1) { animation: _imp-slideUp .20s .05s ease both; }
+.stats-grid .stat:nth-child(2) { animation: _imp-slideUp .20s .10s ease both; }
+.stats-grid .stat:nth-child(3) { animation: _imp-slideUp .20s .15s ease both; }
+.stats-grid .stat:nth-child(4) { animation: _imp-slideUp .20s .20s ease both; }
+
+/* ──────────────────────────────────────────────────────────────
+   M. MODAIS — arredondamento e sombra polidos
+─────────────────────────────────────────────────────────────── */
+.modal-content {
+    border-radius: 16px !important;
+    border: 1px solid var(--border-soft) !important;
+    box-shadow: var(--shadow-large) !important;
+}
+
+.modal-header {
+    background: var(--bg-soft) !important;
+    border-bottom: 1px solid var(--border-soft) !important;
+    padding: 18px 24px !important;
+}
+
+.modal-header h2 {
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    color: var(--text-main) !important;
+    margin: 0 !important;
+}
+
+.modal-footer {
+    background: var(--bg-soft) !important;
+    border-top: 1px solid var(--border-soft) !important;
+    padding: 14px 24px !important;
+}
+
+/* ──────────────────────────────────────────────────────────────
+   N. SCROLLBAR — discreta
+─────────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-soft); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-light); }
+
+/* ──────────────────────────────────────────────────────────────
+   O. FOCO ACESSÍVEL — consistente
+─────────────────────────────────────────────────────────────── */
+:where(button, a, input, select, textarea):focus-visible {
+    outline: 2px solid var(--primary) !important;
+    outline-offset: 2px !important;
+    box-shadow: 0 0 0 4px var(--focus-ring) !important;
+    border-radius: 6px !important;
+}
+
+/* ──────────────────────────────────────────────────────────────
+   P. MODO ESCURO — consolida tokens divergentes dos três arquivos
+─────────────────────────────────────────────────────────────── */
+html[data-theme="dark"] {
+    /* Unifica os dark tokens de styles.css (#071327) e theme-redesign.css (#080d1a) */
+    --bg-page:   #080d1a !important;
+    --bg-card:   #0f172a !important;
+    --bg-soft:   #0b1120 !important;
+    --bg-header: #0f172a !important;
+
+    --primary:        #38bdf8 !important;
+    --primary-soft:   rgba(56,189,248,.10) !important;
+    --primary-dark:   #7dd3fc !important;
+    --primary-hover:  #0ea5e9 !important;
+
+    --accent:         #818cf8 !important;
+    --accent-soft:    rgba(129,140,248,.10) !important;
+
+    --text-main:  #e2e8f0 !important;
+    --text-muted: #64748b !important;
+    --text-light: #475569 !important;
+
+    --border-soft:  #1e293b !important;
+    --border-table: #1e293b !important;
+
+    --positive:      #34d399 !important;
+    --positive-soft: rgba(52,211,153,.10) !important;
+    --negative:      #f87171 !important;
+    --negative-soft: rgba(248,113,113,.10) !important;
+    --warning:       #fbbf24 !important;
+    --warning-soft:  rgba(251,191,36,.10) !important;
+
+    --shadow-soft:   0 1px 3px rgba(0,0,0,.40) !important;
+    --shadow-medium: 0 4px 20px rgba(0,0,0,.55) !important;
+    --shadow-large:  0 12px 40px rgba(0,0,0,.65) !important;
+
+    --weekend-bg:   #1e293b !important;
+    --weekend-text: #94a3b8 !important;
+}
+
+html[data-theme="dark"] .topbar-unified {
+    background: #030712 !important;
+    box-shadow: 0 1px 0 rgba(255,255,255,.05) !important;
+}
+
+html[data-theme="dark"] .card {
+    background: var(--bg-card) !important;
+    border-color: var(--border-soft) !important;
+}
+
+html[data-theme="dark"] .stat {
+    background: rgba(255,255,255,.025) !important;
+    border-color: var(--border-soft) !important;
+}
+
+html[data-theme="dark"] .stat-highlight {
+    background: rgba(30,64,175,.08) !important;
+    border-color: rgba(56,189,248,.15) !important;
+}
+
+html[data-theme="dark"] .subtab-btn.active {
+    background: rgba(255,255,255,.06) !important;
+    color: var(--primary) !important;
+}
+
+html[data-theme="dark"] input,
+html[data-theme="dark"] select,
+html[data-theme="dark"] textarea {
+    background: var(--bg-card) !important;
+    border-color: var(--border-soft) !important;
+    color: var(--text-main) !important;
+}
+
+html[data-theme="dark"] .dashboard-filters {
+    background: rgba(255,255,255,.02) !important;
+    border-color: var(--border-soft) !important;
+}
+
+html[data-theme="dark"] .filter-group select,
+html[data-theme="dark"] .filter-group input[type="date"] {
+    background: var(--bg-card) !important;
+    border-color: var(--border-soft) !important;
+    color: var(--text-main) !important;
+}
+
+html[data-theme="dark"] tbody tr:nth-child(even) {
+    background: rgba(255,255,255,.018) !important;
+}
+
+html[data-theme="dark"] thead th {
+    background: rgba(255,255,255,.03) !important;
+    color: var(--text-muted) !important;
+    border-bottom-color: var(--border-soft) !important;
+}
+
+html[data-theme="dark"] #tabelaAtividades thead th {
+    background: var(--primary-dark) !important;
+}
+
+html[data-theme="dark"] .alertas-jornada {
+    background: rgba(251,191,36,.06) !important;
+    border-color: rgba(251,191,36,.20) !important;
+    border-left-color: var(--warning) !important;
+}
+
+html[data-theme="dark"] .modal-content {
+    background: var(--bg-card) !important;
+    border-color: var(--border-soft) !important;
+}
+
+html[data-theme="dark"] .modal-header,
+html[data-theme="dark"] .modal-footer {
+    background: rgba(255,255,255,.02) !important;
+    border-color: var(--border-soft) !important;
+}
+
+/* ──────────────────────────────────────────────────────────────
+   Q. RESPONSIVO — corrige quebras em mobile sem afetar desktop
+─────────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+    .topbar-unified { padding: 0 16px !important; height: 54px !important; }
+    .topbar-title   { font-size: 14px !important; }
+    .tabs           { flex-wrap: wrap; gap: 4px; }
+    .tab-btn        { padding: 6px 12px !important; font-size: 12.5px !important; }
+    .stats-grid     { grid-template-columns: 1fr 1fr !important; }
+    .stat-value     { font-size: 22px !important; }
+    .dashboard-grid { grid-template-columns: 1fr !important; }
+    .ferias-vertical-grid { grid-template-columns: 1fr !important; }
+}
+
+@media (max-width: 480px) {
+    .stats-grid { grid-template-columns: 1fr !important; }
+}
+
+/* ──────────────────────────────────────────────────────────────
+   R. PREFERS REDUCED MOTION
+─────────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: .01ms !important;
+        transition-duration: .01ms !important;
+    }
+}
+
+/* ──────────────────────────────────────────────────────────────
+   S. KPI CARDS — linha topo sempre visível (redesign Hi-Fi)
+   O redesign mostra a linha top colorida permanentemente,
+   não só no hover. Aqui aplicamos por semântica do valor.
+─────────────────────────────────────────────────────────────── */
+.stat,
+.stat-card {
+    transition: box-shadow .18s ease, transform .18s ease, border-color .18s ease !important;
+}
+
+/* Linha topo sempre visível em todos os KPI cards */
+.stat::before,
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--_kpi-line, var(--primary));
+    border-radius: var(--card-radius, 12px) var(--card-radius, 12px) 0 0;
+    opacity: 1 !important;
+    transition: opacity 0.2s;
+}
+
+/* Hover: translateY + shadow-medium (como no redesign) */
+.stat:hover,
+.stat-card:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: var(--shadow-medium) !important;
+    border-color: var(--border-soft) !important;
+}
+
+/* KPI de saldo positivo — linha verde */
+.stat:has(#saldoBancoHoras),
+.stat:has(#saldo30d) {
+    --_kpi-line: var(--positive);
+}
+
+/* KPI de horas extras / saída estimada — linha accent */
+.stat:has(#horasExtras),
+.stat:has(#horaSaidaEstimada) {
+    --_kpi-line: var(--accent);
+}
+
+/* stat-highlight — linha primary mais forte */
+.stat-highlight::before,
+.stat.stat-highlight::before {
+    --_kpi-line: var(--primary);
+    opacity: 1 !important;
+}
+
+/* ──────────────────────────────────────────────────────────────
+   T. BADGES — pill style como no redesign (border-radius: 100px)
+─────────────────────────────────────────────────────────────── */
+.badge {
+    border-radius: 100px !important;
+    padding: 3px 9px !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    letter-spacing: .2px !important;
+}
+
+/* ──────────────────────────────────────────────────────────────
+   U. SUBTABS — pill container com item ativo elevado
+─────────────────────────────────────────────────────────────── */
+.subtabs {
+    background: var(--bg-soft) !important;
+    border-radius: 10px !important;
+    padding: 3px !important;
+    display: flex !important;
+    gap: 2px !important;
+}
+
+.subtab-btn {
+    border-bottom: none !important;
+    border-radius: 8px !important;
+    padding: 6px 14px !important;
+}
+
+.subtab-btn.active {
+    background: var(--bg-card) !important;
+    color: var(--text-main) !important;
+    border-bottom: none !important;
+    box-shadow: 0 1px 4px rgba(15,23,42,.12), 0 1px 2px rgba(15,23,42,.08) !important;
+}
+
+/* ──────────────────────────────────────────────────────────────
+   V. TOPBAR — chip de status com dot pulsante (mês/período)
+─────────────────────────────────────────────────────────────── */
+.topbar-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    border-radius: 100px;
+    background: rgba(255,255,255,.12);
+    border: 1px solid rgba(255,255,255,.18);
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(255,255,255,.9);
+    letter-spacing: .1px;
+}
+
+/* ──────────────────────────────────────────────────────────────
+   W. DARK MODE — ajustes para as novas regras S-V
+─────────────────────────────────────────────────────────────── */
+html[data-theme="dark"] .stat::before,
+html[data-theme="dark"] .stat-card::before {
+    opacity: .7 !important;
+}
+
+html[data-theme="dark"] .subtab-btn.active {
+    background: var(--bg-card) !important;
+    box-shadow: 0 1px 4px rgba(0,0,0,.4) !important;
+}
+
+html[data-theme="dark"] .badge {
+    letter-spacing: .2px;
+}
